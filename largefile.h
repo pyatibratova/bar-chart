@@ -1,6 +1,10 @@
 #ifndef LARGEFILE_H
 #define LARGEFILE_H
 
+/*
+Класс для чтения и обработки файлов формата "*.txt"
+Одинночные буквы и символы пунктуации игнорируются.
+*/
 #include <QObject>
 #include <QRunnable>
 #include <QFile>
@@ -44,29 +48,29 @@ class LargeFile : public QObject,
 {
     Q_OBJECT
 public:
-    enum ResultCode {
+    enum ResultCode { // статусы возвращаемые из потока
         RESULT_OK,
         RESULT_FAILED,
         RESULT_CANCELLED,
         RESULT_LOADING
     };
 
-    LargeFile( const QString& fileName, quint64 chunkSizeKb = DEFAULT_SIZE );
+    LargeFile( const QString& fileName, quint64 chunkSizeKb = DEFAULT_SIZE ); // 
     ~LargeFile();
 
     void run();
 
 public slots:
-    void cancel();    
+    void cancel();  // пользователь нажал кнопку "Отмена"
 
 signals:
-    void progressChanged( int doneCount, int sumCount);
-    void readingFinished( int resultCode);
-    void creatingChart( QBarSet* set, const QStringList& categories);
+    void progressChanged( int doneCount, int sumCount); // прогресс чтения и обработки данных
+    void readingFinished( int resultCode); 
+    void creatingChart( QBarSet* set, const QStringList& categories); // 
 
 private:
-    void create_histogram(vector<WordPair>& result);
-    void create_result_List(const WordCount& countWords, vector<WordPair>& result);
+    void create_histogram(vector<WordPair>& result); // создание гистограммы
+    void create_result_List(const WordCount& countWords, vector<WordPair>& result); // сохраняем топ - 15, сортировка по алфавиту
     void createData(const WordCount &result);
 
     QFile m_file;
